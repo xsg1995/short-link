@@ -16,7 +16,7 @@ public class ShortLinkGeneratorTest {
 //        Set<String> set = new HashSet<>();
         for (int i = 0; i < 100000; i++) {
             String url = UUID.fastUUID().toString();
-            ShortLinkRequest shortLinkRequest = new ShortLinkRequest(url, null);
+            ShortLinkRequest shortLinkRequest = new ShortLinkRequest(url);
             ShortLink shortLink = shortLinkGenerator.generate(shortLinkRequest, null);
 
 //            if (set.contains(shortLink.getShortLink())) {

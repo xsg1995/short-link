@@ -30,13 +30,13 @@ public class LoadingCacheLocalCacheTest {
 
         ShortLinkStorage shortLinkStorage = new MemoryShortLinkStorage();
         RemoteCache remoteCache = new DirectStorageRemoteCache(shortLinkStorage);
-        LocalCache localCache = new LoadingCacheLocalCache(5, 1, remoteCache);
+        LocalCache localCache = new LoadingCacheLocalCache(5, 1000 * 60, remoteCache);
 
         String prefix = "r";
         Map<String, String> shortLinkMap = new HashMap<>();
         for (int i = 0; i < 4; i++) {
             String url = UUID.fastUUID().toString();
-            ShortLinkRequest shortLinkRequest = new ShortLinkRequest(url, prefix);
+            ShortLinkRequest shortLinkRequest = new ShortLinkRequest(prefix, url);
             ShortLink shortLink = shortLinkGenerator.generate(shortLinkRequest, null);
             try {
                 shortLinkStorage.storage(shortLink);
@@ -55,6 +55,12 @@ public class LoadingCacheLocalCacheTest {
 
         targetUrl = localCache.getTargetUrl("test");
         Assert.assertNull(targetUrl);
+
+        for (Map.Entry<String, String> entry : shortLinkMap.entrySet()) {
+            String shortLink = entry.getKey();
+            targetUrl = localCache.getTargetUrl(prefix, shortLink);
+            Assert.assertEquals(entry.getValue(), targetUrl);
+        }
 
     }
 }
