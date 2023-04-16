@@ -6,7 +6,7 @@ import live.xu.shortlink.ShortLinkExecutor;
 import live.xu.shortlink.core.ShortLink;
 import live.xu.shortlink.dto.ShortLinkGenerateDTO;
 import live.xu.shortlink.exception.UnGetLockException;
-import live.xu.shortlink.resp.ResponseVo;
+import live.xu.shortlink.resp.ResponseResp;
 import live.xu.shortlink.utils.UrlUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,38 +27,38 @@ public class ShortLinkController {
 
     //生成短链接
     @PostMapping("generate")
-    public ResponseVo<ShortLink> generate(@RequestBody @Validated ShortLinkGenerateDTO shortLinkGenerateDTO) {
+    public ResponseResp<ShortLink> generate(@RequestBody @Validated ShortLinkGenerateDTO shortLinkGenerateDTO) {
         try {
             //验证url是否正确
             this.validUrlParams(shortLinkGenerateDTO);
             ShortLink shortLink = this.shortLinkExecutor.generate(shortLinkGenerateDTO.getPrefix(), shortLinkGenerateDTO.getUrl());
-            return ResponseVo.success(shortLink);
+            return ResponseResp.success(shortLink);
         } catch (UnGetLockException e) {
             log.error("生成短链接异常，请重试", e);
         }
-        return ResponseVo.fail("生成短链接异常，请重试");
+        return ResponseResp.fail("生成短链接异常，请重试");
     }
 
     //生成短链接
     @PostMapping("generateShortLinkUrl")
-    public ResponseVo<String> generateShortLinkUrl(@RequestBody @Validated ShortLinkGenerateDTO shortLinkGenerateDTO) {
+    public ResponseResp<String> generateShortLinkUrl(@RequestBody @Validated ShortLinkGenerateDTO shortLinkGenerateDTO) {
         try {
             //验证url是否正确
             this.validUrlParams(shortLinkGenerateDTO);
             ShortLink shortLink = this.shortLinkExecutor.generate(shortLinkGenerateDTO.getPrefix(), shortLinkGenerateDTO.getUrl());
-            return ResponseVo.success(this.shortLinkExecutor.generateShortLinkUrl(shortLink));
+            return ResponseResp.success(this.shortLinkExecutor.generateShortLinkUrl(shortLink));
         } catch (UnGetLockException e) {
             log.error("生成短链接异常，请重试", e);
         }
-        return ResponseVo.fail("生成短链接异常，请重试");
+        return ResponseResp.fail("生成短链接异常，请重试");
     }
 
     //获取目标链接
     @GetMapping("get")
-    public ResponseVo<String> get(@RequestParam(value = "prefix", required = false) String prefix,
-                                  @RequestParam("shortLink") String shortLink) {
+    public ResponseResp<String> get(@RequestParam(value = "prefix", required = false) String prefix,
+                                    @RequestParam("shortLink") String shortLink) {
         String targetUrl = this.shortLinkExecutor.getTargetUrl(prefix, shortLink);
-        return ResponseVo.success(targetUrl);
+        return ResponseResp.success(targetUrl);
     }
 
     //验证提交的参数是否正确
