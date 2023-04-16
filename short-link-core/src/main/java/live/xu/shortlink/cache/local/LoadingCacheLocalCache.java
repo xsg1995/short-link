@@ -16,13 +16,10 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LoadingCacheLocalCache implements LocalCache {
 
-    //空字符串
-    private static final String EMPTY = "";
-
     private final LoadingCache<LoadingCacheKey, String> loadingCache;
 
     public LoadingCacheLocalCache(RemoteCache remoteCache) {
-        this(1000, 1, remoteCache);
+        this(1000, 60 * 1000, remoteCache);
     }
 
     public LoadingCacheLocalCache(long maxSize, long duration, RemoteCache remoteCache) {
@@ -34,10 +31,7 @@ public class LoadingCacheLocalCache implements LocalCache {
                     public String load(LoadingCacheKey key) {
 
                         log.debug("触发远程缓存加载 key -> {}", key);
-                        String targetUrl = remoteCache.getTargetUrl(key.prefix, key.shortLink);
-                        if (targetUrl == null) return EMPTY;
-
-                        return targetUrl;
+                        return remoteCache.getTargetUrl(key.prefix, key.shortLink);
                     }
                 });
     }
@@ -49,9 +43,12 @@ public class LoadingCacheLocalCache implements LocalCache {
 
     @Override
     public String getTargetUrl(String prefix, String shortLink) {
-        String targetUrl = this.loadingCache.getUnchecked(new LoadingCacheKey(prefix, shortLink));
-        if (EMPTY.equals(targetUrl)) return null;  //空字符返回null
-        return targetUrl;
+        try {
+            return this.loadingCache.getUnchecked(new LoadingCacheKey(prefix, shortLink));
+        } catch (CacheLoader.InvalidCacheLoadException e) {
+            log.error("本地缓存无效 prefix -> {} shortLink -> {}", prefix, shortLink);
+        }
+        return null;
     }
 
     //本地缓存key
