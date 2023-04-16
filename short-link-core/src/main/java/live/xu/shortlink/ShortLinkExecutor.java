@@ -115,7 +115,7 @@ public class ShortLinkExecutor {
 
         Integer previousSalt = null;
 
-        for (; ;) {
+        for (int i = 0; i < 100000; i++) {  //防止死循环
             ShortLink shortLink = this.shortLinkGenerator.generate(request, previousSalt);
             boolean lock = this.shortLinkLock.lock(shortLink.getShortLink());
             if (!lock) {
@@ -140,5 +140,6 @@ public class ShortLinkExecutor {
                 this.shortLinkLock.unlock(shortLink.getShortLink());
             }
         }
+        throw new RuntimeException("生成短链接冲突，数据量太大");
     }
 }
