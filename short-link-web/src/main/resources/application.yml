@@ -1,0 +1,19 @@
+server:
+  port: 8763
+
+spring:
+  mvc:
+    static-path-pattern: /static/**
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+short:
+  link:
+    # 本地缓存最大数量
+    localCacheMaxSize: 10
+    # 本地缓存过期时间，单位：毫秒
+    localCacheExpire: 1000
+    # 短链接域名
+    domain: http://127.0.0.1:8763

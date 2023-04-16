@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>短链接转化</title>
+    <script src="../static/jquery-1.11.3.min.js"></script>
+    <style>
+        .text_field {
+            width: 200px;
+            display: inline-block;
+            text-align: right;
+            font-size: 10pt;
+        }
+        .line_input {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+
+<div style="width: 580px; margin: 50px auto">
+    <p class="line_input">
+        <span class="text_field">自定义前缀（非必填）：</span>
+        <input type="text" name="prefix" id="prefix">
+        <span style="font-size: 8pt; color: red">*长度不能超过3，只能包含字母A~Z或a~z</span>
+    </p>
+    <p class="line_input">
+        <span class="text_field">url地址：</span><textarea id="url" style="width: 316px; height: 106px;"></textarea>
+    </p>
+    <p class="line_input">
+        <span class="text_field">短链接：</span><span id="short_link"></span>
+    </p>
+    <p class="line_input">
+        <span style="margin-left: 430px;"><input type="button" name="submit_btn" value="生成短链接" onclick="generateShortLinkUrl()"></span>
+    </p>
+</div>
+
+</body>
+</html>
+<script>
+    function generateShortLinkUrl() {
+        let prefix = $("#prefix").val();
+        let url = $("#url").val();
+
+        $.ajax({
+            type : "POST",  //提交方式
+            url : "http://127.0.0.1:8763/shortlink/generateShortLinkUrl",
+            data : JSON.stringify(
+                {
+                    "prefix" : prefix,
+                    "url" : url
+                }
+            ),
+            contentType: 'application/json',
+            success : function(result) {
+                console.info(result);
+                console.info(result.code);
+                if (result && result.code === 1) {
+                    $('#short_link').text(result.data);
+                }
+                if (result && result.code === 0) {
+                    alert(result.msg);
+                }
+            }
+        });
+    }
+</script>
