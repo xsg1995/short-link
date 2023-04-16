@@ -64,7 +64,7 @@ public class ShortLinkController {
     //验证提交的参数是否正确
     private void validUrlParams(ShortLinkGenerateDTO shortLinkGenerateDTO) {
         boolean valid = UrlUtils.valid(shortLinkGenerateDTO.getUrl());
-        if (!valid) throw new IllegalArgumentException("url链接异常 " + shortLinkGenerateDTO.getUrl());
+        if (!valid) throw new IllegalArgumentException("url地址格式错误 " + shortLinkGenerateDTO.getUrl());
 
         String prefix = shortLinkGenerateDTO.getPrefix();
         if (StrUtil.isNotBlank(prefix) && prefix.trim().length() > 3) {
