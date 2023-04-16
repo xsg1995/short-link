@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "short.link")
 public class ShortLinkProperties {
-    //短链接域名
+    //短链接解析域名
     private String domain;
     //本地缓存最大数量
     private long localCacheMaxSize;
