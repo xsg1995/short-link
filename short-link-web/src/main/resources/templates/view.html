@@ -42,6 +42,7 @@
     function generateShortLinkUrl() {
         let prefix = $("#prefix").val();
         let url = $("#url").val();
+        $('#short_link').text('');  //清空旧值
 
         $.ajax({
             type : "POST",  //提交方式
