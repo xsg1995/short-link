@@ -18,12 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Objects;
 
 /**
- * 短链接执行器
+ * 短链接执行器，封装底层调用逻辑，屏蔽底层实现，使系统更加易用
  * Create by xsg at 2023/04/15 09:45.
  */
 @Slf4j
 public class ShortLinkExecutor {
-    //域名
+    //短链接解析域名
     private final String domain;
     //缓存实现
     private final LocalCache localCache;
