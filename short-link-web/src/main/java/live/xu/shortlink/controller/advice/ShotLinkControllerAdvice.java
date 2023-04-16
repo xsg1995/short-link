@@ -1,6 +1,6 @@
 package live.xu.shortlink.controller.advice;
 
-import live.xu.shortlink.resp.ResponseVo;
+import live.xu.shortlink.resp.ResponseResp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,19 +22,19 @@ public class ShotLinkControllerAdvice {
      * 校验错误拦截处理
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseVo<String> validationBodyException(MethodArgumentNotValidException exception) {
+    public ResponseResp<String> validationBodyException(MethodArgumentNotValidException exception) {
         List<ObjectError> allErrors = exception.getBindingResult().getAllErrors();
         List<String> errors = new ArrayList<>();
         for (ObjectError allError : allErrors) {
             errors.add(allError.getDefaultMessage());
         }
 
-        return ResponseVo.fail(errors.toString());
+        return ResponseResp.fail(errors.toString());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseVo<String> illegalArgumentException(IllegalArgumentException illegalArgumentException) {
+    public ResponseResp<String> illegalArgumentException(IllegalArgumentException illegalArgumentException) {
         log.error("参数异常", illegalArgumentException);
-        return ResponseVo.fail(illegalArgumentException.getMessage());
+        return ResponseResp.fail(illegalArgumentException.getMessage());
     }
 }
