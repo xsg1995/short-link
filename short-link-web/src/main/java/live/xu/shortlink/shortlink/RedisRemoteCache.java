@@ -32,7 +32,7 @@ public class RedisRemoteCache implements RemoteCache {
 
         ShortLink shortLinkData = this.shortLinkStorage.get(prefix, shortLink);
         if (shortLinkData == null) {
-            this.redisTemplate.opsForValue().set(key, EMPTY_STR, 10, TimeUnit.SECONDS);  // 链接不存在，放入空字符10分钟
+            this.redisTemplate.opsForValue().set(key, EMPTY_STR, 5, TimeUnit.MINUTES);  // 链接不存在，放入空字符5分钟
             return null;
         }
         targetUrl = shortLinkData.getUrl();
