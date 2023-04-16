@@ -2,6 +2,7 @@ package live.xu.shortlink.controller;
 
 import cn.hutool.core.net.url.UrlBuilder;
 import live.xu.shortlink.ShortLinkExecutor;
+import live.xu.shortlink.exception.ParamsErrorException;
 import live.xu.shortlink.utils.UrlUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class RedirectController {
 
         //验证url
         boolean valid = UrlUtils.valid(targetUrl);
-        if (!valid) throw new IllegalArgumentException("跳转目标链接异常 " + targetUrl);
+        if (!valid) throw new ParamsErrorException("跳转目标链接异常 " + targetUrl);
 
         return "redirect:" + UrlBuilder.of(targetUrl).build();
     }
@@ -43,7 +44,7 @@ public class RedirectController {
 
         //验证url
         boolean valid = UrlUtils.valid(targetUrl);
-        if (!valid) throw new IllegalArgumentException("跳转目标链接异常 " + targetUrl);
+        if (!valid) throw new ParamsErrorException("跳转目标链接异常 " + targetUrl);
 
         return "redirect:" + UrlBuilder.of(targetUrl).build();
     }
