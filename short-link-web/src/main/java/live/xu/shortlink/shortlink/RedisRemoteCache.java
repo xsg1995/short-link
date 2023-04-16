@@ -6,6 +6,7 @@ import live.xu.shortlink.core.ShortLink;
 import live.xu.shortlink.storage.ShortLinkStorage;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.index.PathBasedRedisIndexDefinition;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,6 +17,9 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class RedisRemoteCache implements RemoteCache {
 
+    //空字符
+    private final static String EMPTY_STR = "";
+    //远程缓存
     private final ShortLinkStorage shortLinkStorage;
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -24,14 +28,15 @@ public class RedisRemoteCache implements RemoteCache {
         String key = this.getKey(prefix, shortLink);
         String targetUrl = this.redisTemplate.opsForValue().get(key);
         if (StrUtil.isNotBlank(targetUrl)) return targetUrl;
+        if (EMPTY_STR.equals(targetUrl)) return null;  //空字符，链接不存在
 
         ShortLink shortLinkData = this.shortLinkStorage.get(prefix, shortLink);
         if (shortLinkData == null) {
-            this.redisTemplate.opsForValue().set(key, "", 10, TimeUnit.SECONDS);
+            this.redisTemplate.opsForValue().set(key, EMPTY_STR, 10, TimeUnit.SECONDS);  // 链接不存在，放入空字符10分钟
             return null;
         }
         targetUrl = shortLinkData.getUrl();
-        this.redisTemplate.opsForValue().set(key, targetUrl, 1, TimeUnit.HOURS);
+        this.redisTemplate.opsForValue().set(key, targetUrl, 1, TimeUnit.HOURS);  // 缓存1个小时
         return targetUrl;
     }
 
