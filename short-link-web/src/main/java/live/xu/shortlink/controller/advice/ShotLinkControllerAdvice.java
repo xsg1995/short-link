@@ -1,5 +1,6 @@
 package live.xu.shortlink.controller.advice;
 
+import live.xu.shortlink.exception.ParamsErrorException;
 import live.xu.shortlink.resp.ResponseResp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.ObjectError;
@@ -32,9 +33,8 @@ public class ShotLinkControllerAdvice {
         return ResponseResp.fail(errors.toString());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseResp<String> illegalArgumentException(IllegalArgumentException illegalArgumentException) {
-        log.error("参数异常", illegalArgumentException);
-        return ResponseResp.fail(illegalArgumentException.getMessage());
+    @ExceptionHandler(ParamsErrorException.class)
+    public ResponseResp<String> paramsErrorException(ParamsErrorException paramsErrorException) {
+        return ResponseResp.fail(paramsErrorException.getMessage());
     }
 }

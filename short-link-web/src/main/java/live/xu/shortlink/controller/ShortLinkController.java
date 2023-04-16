@@ -6,6 +6,7 @@ import live.xu.shortlink.ShortLinkExecutor;
 import live.xu.shortlink.core.ShortLink;
 import live.xu.shortlink.dto.ShortLinkGenerateDTO;
 import live.xu.shortlink.exception.UnGetLockException;
+import live.xu.shortlink.exception.ParamsErrorException;
 import live.xu.shortlink.resp.ResponseResp;
 import live.xu.shortlink.utils.UrlUtils;
 import lombok.AllArgsConstructor;
@@ -64,17 +65,17 @@ public class ShortLinkController {
     //验证提交的参数是否正确
     private void validUrlParams(ShortLinkGenerateDTO shortLinkGenerateDTO) {
         boolean valid = UrlUtils.valid(shortLinkGenerateDTO.getUrl());
-        if (!valid) throw new IllegalArgumentException("url地址格式错误 " + shortLinkGenerateDTO.getUrl());
+        if (!valid) throw new ParamsErrorException("url地址格式错误 " + shortLinkGenerateDTO.getUrl());
 
         String prefix = shortLinkGenerateDTO.getPrefix();
         if (StrUtil.isNotBlank(prefix) && prefix.trim().length() > 3) {
-            throw new IllegalArgumentException("自定义前缀长度不能超过3");
+            throw new ParamsErrorException("自定义前缀长度不能超过3");
         }
         if (StrUtil.isNotBlank(prefix)) {
             char[] chars = prefix.toCharArray();
             for (char c : chars) {
                 if (!CharUtil.isLetter(c)) {
-                    throw new IllegalArgumentException("自定义前缀只能包含字母A~Z或a~z");
+                    throw new ParamsErrorException("自定义前缀只能包含字母A~Z或a~z");
                 }
             }
         }
