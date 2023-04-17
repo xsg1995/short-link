@@ -1,8 +1,10 @@
 package live.xu.shortlink.config;
 
 import live.xu.shortlink.cache.remote.RemoteCache;
+import live.xu.shortlink.lock.ShortLinkLock;
 import live.xu.shortlink.shortlink.MysqlShortLinkStorage;
 import live.xu.shortlink.shortlink.RedisRemoteCache;
+import live.xu.shortlink.shortlink.RedisShortLinkLock;
 import live.xu.shortlink.storage.ShortLinkStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +23,16 @@ public class BeanConfig {
         return new MysqlShortLinkStorage();
     }
 
-    //reid实现的远程缓存
+    //reids实现的远程缓存
     @Bean
     public RemoteCache redisRemoteCache(ShortLinkStorage shortLinkStorage,
                                         RedisTemplate<String, String> redisTemplate) {
         return new RedisRemoteCache(shortLinkStorage, redisTemplate);
+    }
+
+    //redis实现的分布式锁
+    @Bean
+    public ShortLinkLock redisShortLinkLock() {
+        return new RedisShortLinkLock();
     }
 }

@@ -24,6 +24,7 @@
         <logback.version>1.2.11</logback.version>
         <mybatis-plus-boot-starter.version>3.5.1</mybatis-plus-boot-starter.version>
         <mysql.version>8.0.27</mysql.version>
+        <redisson-starter.version>3.16.1</redisson-starter.version>
     </properties>
 
     <dependencyManagement>
@@ -90,6 +91,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <!-- 在Redis基础上的一个Java实用工具包 -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson-starter.version}</version>
             </dependency>
 
             <!-- short-link-core -->
