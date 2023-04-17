@@ -32,7 +32,7 @@ public class ShortLinkController {
         try {
             //验证url是否正确
             this.validUrlParams(shortLinkGenerateDTO);
-            ShortLink shortLink = this.shortLinkExecutor.generate(shortLinkGenerateDTO.getPrefix(), shortLinkGenerateDTO.getUrl());
+            ShortLink shortLink = this.shortLinkExecutor.generate(shortLinkGenerateDTO.getPrefix(), shortLinkGenerateDTO.getUrl().trim());
             return ResponseResp.success(shortLink);
         } catch (UnGetLockException e) {
             log.error("生成短链接异常，请重试", e);
@@ -46,7 +46,7 @@ public class ShortLinkController {
         try {
             //验证url是否正确
             this.validUrlParams(shortLinkGenerateDTO);
-            ShortLink shortLink = this.shortLinkExecutor.generate(shortLinkGenerateDTO.getPrefix(), shortLinkGenerateDTO.getUrl());
+            ShortLink shortLink = this.shortLinkExecutor.generate(shortLinkGenerateDTO.getPrefix(), shortLinkGenerateDTO.getUrl().trim());
             return ResponseResp.success(this.shortLinkExecutor.generateShortLinkUrl(shortLink));
         } catch (UnGetLockException e) {
             log.error("生成短链接异常，请重试", e);
