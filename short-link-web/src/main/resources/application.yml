@@ -33,7 +33,7 @@ mybatis-plus:
 short:
   link:
     # 本地缓存最大数量
-    localCacheMaxSize: 10
+    localCacheMaxSize: 1000
     # 本地缓存过期时间，单位：毫秒
     localCacheExpire: 600000  # 10分钟
     # 短链接解析域名
